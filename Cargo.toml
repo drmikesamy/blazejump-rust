@@ -1,0 +1,16 @@
+[package]
+name = "blazejump-rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
+tokio = { version = "*", features = ["macros", "rt-multi-thread"] }
+tokio-tungstenite =  { version = "*", features = ["native-tls"] }
+serde_json = "*"
+chrono = "*"
+log = "*"
+futures-util = "*"
+env_logger = "*"
