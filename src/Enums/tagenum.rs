@@ -1,14 +1,14 @@
 pub enum TagEnum
 {
-    e = 0,
-    p = 1,
-    a = 2,
-    r = 3,
-    t = 4,
-    g = 5,
-    nonce = 6,
-    subject = 7,
-    d = 8,
-    expiration = 9,
-    q = 10
+    E = 0,
+    P = 1,
+    A = 2,
+    R = 3,
+    T = 4,
+    G = 5,
+    Nonce = 6,
+    Subject = 7,
+    D = 8,
+    Expiration = 9,
+    Q = 10
 }

@@ -1,3 +1,6 @@
+use crate::enums::kindenum::KindEnum;
+use crate::models::eventtag::EventTag;
+
 pub struct NEvent {
     pub id: String,
     pub pubkey: Option<String>,

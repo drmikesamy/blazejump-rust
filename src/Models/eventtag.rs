@@ -1,3 +1,5 @@
+use crate::enums::tagenum::TagEnum;
+
 pub struct EventTag {
     pub id: i64,
     pub nevent_id: String,

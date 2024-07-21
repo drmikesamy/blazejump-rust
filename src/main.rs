@@ -1,13 +1,10 @@
 use tokio_tungstenite::{ connect_async, tungstenite::protocol::Message };
 use serde_json::Value;
-use chrono::Local;
 use log::{ info, error, LevelFilter };
 use futures_util::{SinkExt, StreamExt};
 use env_logger;
-use NFilter;
-use NMessage;
-use NEvent;
-use MessageTypeEnum;
+mod models;
+mod enums;
 
 #[tokio::main]
 async fn main() {
@@ -17,9 +14,6 @@ async fn main() {
     let (ws_stream, _) = connect_async(url).await.expect("Failed to connect");
     println!("Connected");
     let (mut write, mut read) = ws_stream.split();
-    let filter = NFilter {
-
-    };
     //let nmessage: NMessage = 
     write.send(Message::Text("[\"REQ\",\"Event_ef872131-1e88-4183-8d74-b95c59d05058\",{\"ids\":[\"605b370290b863935b5cd36c06ec9ff989b8fd02bfb3c49172cabb987920b16f\"],\"kinds\":[1],\"since\":1089888389,\"until\":1721126789,\"limit\":1},{\"kinds\":[1],\"#e\":[\"605b370290b863935b5cd36c06ec9ff989b8fd02bfb3c49172cabb987920b16f\"],\"since\":1089888389,\"until\":1721126789,\"limit\":5}]".to_string()+"\n")).await.unwrap();
     while let Some(message) = read.next().await {
