@@ -1,6 +1,5 @@
 use tokio::net::TcpStream;
-use tokio_tungstenite::{WebSocketStream, MaybeTlsStream, connect_async, tungstenite::Error, tungstenite::protocol::Message};
-use serde_json::Value;
+use tokio_tungstenite::{WebSocketStream, MaybeTlsStream, connect_async, tungstenite::Error };
 use log::info;
 
 pub struct NConnection<'a> {
@@ -13,15 +12,10 @@ impl<'a> NConnection<'a> {
         info!("Connecting to {}", uri);
         match connect_async(uri).await {
             Ok((nwebsocket, _)) => { 
-                info!("Connected {}", uri);
+                info!("Connected to {}", uri);
                 return Ok(NConnection{ uri, nwebsocket })
                 },
             Err(e) => Err(e),
         }
-    }
-
-    pub async fn fetch_by_filter() {
-        let uri = String::from("wss://nostr.wine");
-        let newconnection = NConnection::new(&uri).await;
     }
 }
