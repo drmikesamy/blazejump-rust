@@ -2,22 +2,21 @@ pub mod enums;
 pub mod models;
 pub mod services;
 use models::nconnectionmanager::NConnectionManager;
+use yew::prelude::*;
+use std::io::{stdin, stdout, Write};
 
 #[tokio::main]
-
 async fn main() {
-    use std::io::{stdin, stdout, Write};
-    let mut connectionmanager = NConnectionManager::init();
+    yew::Renderer::<App>::new().render();
+}
+
+#[function_component]
+fn App() -> Html {
+    let connectionmanager = NConnectionManager::init();
     loop {
-        print!(
-            "Currently connected to {} relays.",
-            &connectionmanager.connections.len()
-        );
-        for connection in &connectionmanager.connections {
-            print!("{}", connection.url);
-        }
+        let connections = connectionmanager.clone();
         let mut input_string = String::new();
-        print!("Type a Nostr websocket url to connect to: ");
+        println!("Type a Nostr websocket url to connect to: ");
         let _ = stdout().flush();
         stdin()
             .read_line(&mut input_string)
@@ -29,7 +28,8 @@ async fn main() {
             input_string.pop();
         }
         let url = String::from(input_string);
-        print!("Connecting to {}", url);
-        connectionmanager.connect_new(url).await;
+        println!("Connecting to {}", url);
+        connections.connect_new(url).await;
     }
+    html! { "hello world" }
 }

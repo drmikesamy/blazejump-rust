@@ -1,24 +1,34 @@
-use tokio_tungstenite::tungstenite::Error;
-use super::nconnection::NConnection;
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+use tokio::task::JoinHandle;
+use tokio_tungstenite::{connect_async, tungstenite::Error};
 
+use crate::enums::kindenum::KindEnum;
+#[derive(Clone)]
 pub struct NConnectionManager {
-    pub connections: Vec<NConnection>
+    pub connections: Arc<Mutex<HashMap<String, JoinHandle<()>>>>,
 }
 
 impl NConnectionManager {
     pub fn init() -> Self {
-        NConnectionManager{ connections: Vec::with_capacity(1000) }
+        let db = Arc::new(Mutex::new(HashMap::new()));
+        NConnectionManager { connections: db }
     }
-    pub async fn connect_new(&mut self, uri: String) -> bool{
-        match NConnection::new_nconnection(uri).await {
-            Ok(nconnection) => {
-                self.connections.push(nconnection);
-                return true;
-            }
-            Err(e) => {
-                return false;
-            }
-        }
+    pub async fn connect_new(self, uri: String) {
+        let theuri = uri.clone();
+        self.connections.lock().unwrap().insert(
+            uri,
+            tokio::spawn(async move {
+                match connect_async(theuri).await {
+                    Err(e) => {
+                        eprintln!("Could not connect due to error: {}", e);
+                    }
+                    Ok((nwebsocket, _)) => {
+                        println!("Connected");
+                    }
+                }
+            }),
+        );
     }
     // pub async fn fetch_by_filter(filter: String, connectionmanager: &NConnectionManager<'a>){
     //     for websocket in connectionmanager.nwebsockets {
