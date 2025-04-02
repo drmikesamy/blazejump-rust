@@ -29,7 +29,7 @@ fn App() -> Html {
         }
         let url = String::from(input_string);
         println!("Connecting to {}", url);
-        connections.connect_new(url).await;
+        connections.connect_new(url);
     }
     html! { "hello world" }
 }
